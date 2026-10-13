@@ -4,12 +4,9 @@
 //
 //  The match, as configured and ready to play.
 //
-//  Scope note: every value on this screen is read from a real `GameSession`
-//  that was built from the real repository — the roster, the turn order, the
-//  question count and the points total are all genuine. What is *not* here is
-//  gameplay: no questions are shown, no answers are scored, and no score is
-//  displayed, because the match engine is the next stage. Showing a mocked
-//  question or a placeholder scoreboard would be inventing results.
+//  A last look at the roster before the first question: who is playing, in what
+//  order, and how many turns each. Every value is read from the real
+//  `GameSession` built by player setup.
 //
 
 import SwiftUI
@@ -17,6 +14,8 @@ import SwiftUI
 struct MatchStartView: View {
 
     let session: GameSession
+    /// Begins the match.
+    let onBegin: () -> Void
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.brandAnimationsEnabled) private var animated
@@ -41,9 +40,11 @@ struct MatchStartView: View {
 
                 Spacer(minLength: 20)
 
-                Text("The match engine — questions, the timer and scoring — is the next stage. Nothing is scored yet.")
-                    .font(BrandFont.caption)
-                    .foregroundStyle(Brand.textTertiary)
+                Button(action: onBegin) {
+                    Label("Begin Match", systemImage: "play.fill")
+                }
+                .buttonStyle(BrandButtonStyle(kind: .primary))
+                .accessibilityHint("Starts the first question")
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .padding(.horizontal, BrandLayout.screenPaddingH)
@@ -142,6 +143,6 @@ struct MatchStartView: View {
             ],
             settings: QuizSettings(category: .sriLankanCulture, questionCount: 10),
             questions: []
-        ))
+        ), onBegin: {})
     }
 }

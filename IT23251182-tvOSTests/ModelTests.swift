@@ -164,11 +164,6 @@ final class MatchResultTests: XCTestCase {
 
 final class DifficultyTests: XCTestCase {
 
-    func testPointsIncreaseWithDifficulty() {
-        XCTAssertLessThan(Difficulty.easy.basePoints, Difficulty.medium.basePoints)
-        XCTAssertLessThan(Difficulty.medium.basePoints, Difficulty.hard.basePoints)
-    }
-
     func testTimeLimitIncreasesWithDifficulty() {
         XCTAssertLessThan(Difficulty.easy.timeLimit, Difficulty.medium.timeLimit)
         XCTAssertLessThan(Difficulty.medium.timeLimit, Difficulty.hard.timeLimit)

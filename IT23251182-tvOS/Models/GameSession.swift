@@ -48,7 +48,7 @@ struct GameSession: Identifiable, Equatable, Hashable {
     /// Highest score a single player could reach if they answered every
     /// question in the match correctly.
     var maximumPoints: Int {
-        questions.reduce(0) { $0 + $1.difficulty.basePoints }
+        MatchScoring.maximumPoints(forQuestionCount: questionCount)
     }
 
     /// Which player answers question `index`, rotating through the roster.
