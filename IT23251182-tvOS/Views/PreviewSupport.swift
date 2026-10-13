@@ -17,7 +17,7 @@ enum PreviewSupport {
     /// the screen's own empty state instead of crashing the canvas.
     static func loadedRepository() -> QuestionRepository {
         let repository = QuestionRepository()
-        try? repository.load()
+        _ = try? repository.load()
         return repository
     }
 }

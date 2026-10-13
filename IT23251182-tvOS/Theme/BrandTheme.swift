@@ -60,6 +60,20 @@ enum Brand {
     /// Text drawn on top of an accent-filled surface.
     static let onAccent      = Color(hex: 0x10131C)
 
+    /// One colour per player seat, used to tell the slots apart at a glance.
+    /// Each is bright enough to read against both card fills on a television.
+    static let playerColors: [Color] = [
+        Color(hex: 0xDFFF45),   // lime   — seat 1
+        Color(hex: 0x5AC8FA),   // sky    — seat 2
+        Color(hex: 0xFF9F45),   // amber  — seat 3
+        Color(hex: 0xC792EA)    // violet — seat 4
+    ]
+
+    /// Wraps rather than trapping, so an unexpected seat index cannot crash a view.
+    static func playerColor(at index: Int) -> Color {
+        playerColors[((index % playerColors.count) + playerColors.count) % playerColors.count]
+    }
+
     // Semantic feedback (used by gameplay in a later stage)
     static let correct       = Color(hex: 0x3ECF8E)
     static let incorrect     = Color(hex: 0xFF5C5C)

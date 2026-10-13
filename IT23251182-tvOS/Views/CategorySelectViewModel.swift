@@ -10,16 +10,12 @@
 //  Every rule — what is playable, what the preview shows, what settings get
 //  handed to player setup — lives here and is unit-testable without SwiftUI.
 //
-//  `nonisolated` for the same reason as `QuestionRepository`: this type is
-//  exercised directly by unit tests, and the project's MainActor-by-default
-//  isolation gives plain classes an isolated deinit that aborts under XCTest.
-//
 
 import Foundation
 import Observation
 
 @Observable
-nonisolated final class CategorySelectViewModel {
+final class CategorySelectViewModel {
 
     // MARK: State
 

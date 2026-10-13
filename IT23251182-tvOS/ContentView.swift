@@ -30,6 +30,9 @@ struct ContentView: View {
     /// decide what to push next.
     @State private var path: [AppRoute] = []
 
+    /// Shared by every view model, so the bank is parsed once per launch.
+    private let repository: QuestionRepository
+
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
 
     init() {
@@ -38,6 +41,7 @@ struct ContentView: View {
         // next line already sees a populated bank.
         let repository = QuestionRepository()
         let home = HomeViewModel(repository: repository)
+        self.repository = repository
         _viewModel = State(initialValue: home)
         _categorySelection = State(initialValue: CategorySelectViewModel(repository: repository))
     }
@@ -74,7 +78,16 @@ struct ContentView: View {
             }
 
         case .playerSetup(let chosenSettings):
-            PlayerSetupView(settings: chosenSettings)
+            PlayerSetupView(
+                viewModel: PlayerSetupViewModel(settings: chosenSettings,
+                                                repository: repository)
+            ) { session in
+                // Setup reports the built session; this view decides where it goes.
+                path.append(.match(session))
+            }
+
+        case .match(let session):
+            MatchStartView(session: session)
 
         case .howToPlay:
             HowToPlayView()

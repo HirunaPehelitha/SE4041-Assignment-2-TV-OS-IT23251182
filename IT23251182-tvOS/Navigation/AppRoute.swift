@@ -19,6 +19,7 @@ import Foundation
 enum AppRoute: Hashable {
     case categorySelect              // "Play Game" — choose a subject
     case playerSetup(QuizSettings)   // carries the chosen category forward
+    case match(GameSession)          // carries the configured match forward
     case howToPlay
     case leaderboard
     case settings

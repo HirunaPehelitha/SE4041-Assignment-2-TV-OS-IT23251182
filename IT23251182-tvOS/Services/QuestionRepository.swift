@@ -162,7 +162,7 @@ enum QuestionBankDecoder {
 
 // MARK: - Bundle-backed provider
 
-nonisolated struct BundleQuestionProvider: QuestionProviding {
+struct BundleQuestionProvider: QuestionProviding {
     let resourceName: String
     let bundle: Bundle
 
@@ -189,14 +189,7 @@ nonisolated struct BundleQuestionProvider: QuestionProviding {
 
 /// The app's single entry point to question data: filtering, counting and
 /// building the shuffled set of questions a match will actually use.
-///
-/// Explicitly `nonisolated`. This project builds with Xcode 26's
-/// `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`, which would otherwise bind this
-/// class — and its deinitialiser — to the main actor. The repository holds no UI
-/// state and performs pure data work, so tying it to the main thread is both
-/// unnecessary and limiting: keeping it nonisolated leaves the door open to
-/// loading a larger bank off the main thread in future.
-nonisolated final class QuestionRepository {
+final class QuestionRepository {
 
     private(set) var allQuestions: [Question] = []
     private(set) var version: Int = 0
