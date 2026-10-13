@@ -1,0 +1,705 @@
+{
+  "version": 2,
+  "questions": [
+    {
+      "id": "slc-01",
+      "category": "sriLankanCulture",
+      "difficulty": "easy",
+      "prompt": "What is the traditional Sinhala and Tamil New Year festival called?",
+      "options": [
+        "Aluth Avurudda",
+        "Vesak",
+        "Poson",
+        "Deepavali"
+      ],
+      "correctIndex": 0,
+      "explanation": "Aluth Avurudda, the Sinhala and Tamil New Year, is celebrated in mid-April and is Sri Lanka's most widely observed cultural festival."
+    },
+    {
+      "id": "slc-02",
+      "category": "sriLankanCulture",
+      "difficulty": "easy",
+      "prompt": "Which Sri Lankan city hosts the annual Esala Perahera procession?",
+      "options": [
+        "Colombo",
+        "Kandy",
+        "Galle",
+        "Jaffna"
+      ],
+      "correctIndex": 1,
+      "explanation": "The Esala Perahera is held in Kandy and honours the Sacred Tooth Relic housed at the Temple of the Tooth."
+    },
+    {
+      "id": "slc-03",
+      "category": "sriLankanCulture",
+      "difficulty": "easy",
+      "prompt": "Pol sambol, a staple Sri Lankan side dish, is made mainly from which ingredient?",
+      "options": [
+        "Lentils",
+        "Aubergine",
+        "Coconut",
+        "Green beans"
+      ],
+      "correctIndex": 2,
+      "explanation": "'Pol' means coconut in Sinhala. Pol sambol combines scraped coconut with chilli, lime, onion and Maldive fish."
+    },
+    {
+      "id": "slc-04",
+      "category": "sriLankanCulture",
+      "difficulty": "easy",
+      "prompt": "Which festival commemorates the birth, enlightenment and passing of the Buddha?",
+      "options": [
+        "Poson",
+        "Esala",
+        "Thai Pongal",
+        "Vesak"
+      ],
+      "correctIndex": 3,
+      "explanation": "Vesak falls on the full moon of May and is marked across Sri Lanka with lanterns and free food stalls called dansal."
+    },
+    {
+      "id": "slc-05",
+      "category": "sriLankanCulture",
+      "difficulty": "medium",
+      "prompt": "What is the national flower of Sri Lanka?",
+      "options": [
+        "Blue water lily",
+        "Lotus",
+        "Jasmine",
+        "Frangipani"
+      ],
+      "correctIndex": 0,
+      "explanation": "The blue water lily, known locally as Nil Manel, was designated Sri Lanka's national flower in 1986."
+    },
+    {
+      "id": "slc-06",
+      "category": "sriLankanCulture",
+      "difficulty": "medium",
+      "prompt": "Which was the first ancient capital of Sri Lanka and is now a UNESCO World Heritage Site?",
+      "options": [
+        "Polonnaruwa",
+        "Anuradhapura",
+        "Kandy",
+        "Sigiriya"
+      ],
+      "correctIndex": 1,
+      "explanation": "Anuradhapura served as the island's capital for over a thousand years from around the 4th century BCE."
+    },
+    {
+      "id": "slc-07",
+      "category": "sriLankanCulture",
+      "difficulty": "medium",
+      "prompt": "Which drum is central to traditional Kandyan dance?",
+      "options": [
+        "Tabla",
+        "Mridangam",
+        "Geta Bera",
+        "Djembe"
+      ],
+      "correctIndex": 2,
+      "explanation": "The Geta Bera is a double-headed drum played at the waist and is the signature instrument of up-country Kandyan dance."
+    },
+    {
+      "id": "slc-08",
+      "category": "sriLankanCulture",
+      "difficulty": "medium",
+      "prompt": "Sri Lanka is the world's leading producer of which spice?",
+      "options": [
+        "Black pepper",
+        "Cardamom",
+        "Nutmeg",
+        "Cinnamon"
+      ],
+      "correctIndex": 3,
+      "explanation": "Sri Lanka produces the great majority of the world's true cinnamon, long traded internationally as Ceylon cinnamon."
+    },
+    {
+      "id": "slc-09",
+      "category": "sriLankanCulture",
+      "difficulty": "hard",
+      "prompt": "Sigiriya, the rock fortress, was built during the reign of which king?",
+      "options": [
+        "King Kashyapa I",
+        "King Dutugemunu",
+        "King Parakramabahu I",
+        "King Vijaya"
+      ],
+      "correctIndex": 0,
+      "explanation": "Kashyapa I made Sigiriya his royal citadel in the 5th century CE after seizing the throne from his father."
+    },
+    {
+      "id": "slc-10",
+      "category": "sriLankanCulture",
+      "difficulty": "hard",
+      "prompt": "The vast Parakrama Samudra reservoir is credited to which Sri Lankan king?",
+      "options": [
+        "King Kashyapa I",
+        "King Parakramabahu I",
+        "King Devanampiya Tissa",
+        "King Mahasena"
+      ],
+      "correctIndex": 1,
+      "explanation": "Parakramabahu I built the reservoir at Polonnaruwa in the 12th century, reflecting his principle that no rainwater should reach the sea unused."
+    },
+    {
+      "id": "spc-01",
+      "category": "sportsAndCricket",
+      "difficulty": "easy",
+      "prompt": "How many players from one team are on the field during a cricket match?",
+      "options": [
+        "9",
+        "10",
+        "11",
+        "12"
+      ],
+      "correctIndex": 2,
+      "explanation": "A cricket side fields eleven players, with substitutes permitted only for fielding in most formats."
+    },
+    {
+      "id": "spc-02",
+      "category": "sportsAndCricket",
+      "difficulty": "easy",
+      "prompt": "How many legal deliveries make up a standard cricket over?",
+      "options": [
+        "4",
+        "5",
+        "8",
+        "6"
+      ],
+      "correctIndex": 3,
+      "explanation": "A standard over consists of six legal deliveries; wides and no-balls must be bowled again."
+    },
+    {
+      "id": "spc-03",
+      "category": "sportsAndCricket",
+      "difficulty": "easy",
+      "prompt": "What is it called when a bowler takes three wickets in three consecutive deliveries?",
+      "options": [
+        "A hat-trick",
+        "A maiden",
+        "A double strike",
+        "A triple play"
+      ],
+      "correctIndex": 0,
+      "explanation": "The term hat-trick originated in 19th-century cricket, when a bowler achieving the feat was rewarded with a hat."
+    },
+    {
+      "id": "spc-04",
+      "category": "sportsAndCricket",
+      "difficulty": "easy",
+      "prompt": "Which country won the 1996 Cricket World Cup?",
+      "options": [
+        "Australia",
+        "Sri Lanka",
+        "India",
+        "Pakistan"
+      ],
+      "correctIndex": 1,
+      "explanation": "Sri Lanka beat Australia in the 1996 final in Lahore, winning their first World Cup title."
+    },
+    {
+      "id": "spc-05",
+      "category": "sportsAndCricket",
+      "difficulty": "medium",
+      "prompt": "Who captained Sri Lanka to victory in the 1996 Cricket World Cup?",
+      "options": [
+        "Sanath Jayasuriya",
+        "Aravinda de Silva",
+        "Arjuna Ranatunga",
+        "Marvan Atapattu"
+      ],
+      "correctIndex": 2,
+      "explanation": "Arjuna Ranatunga led the side, while Aravinda de Silva scored an unbeaten century in the final."
+    },
+    {
+      "id": "spc-06",
+      "category": "sportsAndCricket",
+      "difficulty": "medium",
+      "prompt": "Which Test cricket series is contested between England and Australia?",
+      "options": [
+        "The Border-Gavaskar Trophy",
+        "The Wisden Trophy",
+        "The Basil D'Oliveira Trophy",
+        "The Ashes"
+      ],
+      "correctIndex": 3,
+      "explanation": "The Ashes dates from 1882, when a mock obituary declared English cricket dead and its ashes taken to Australia."
+    },
+    {
+      "id": "spc-07",
+      "category": "sportsAndCricket",
+      "difficulty": "medium",
+      "prompt": "Who was the first male cricketer to score a double century in a One Day International?",
+      "options": [
+        "Sachin Tendulkar",
+        "Virender Sehwag",
+        "Chris Gayle",
+        "Rohit Sharma"
+      ],
+      "correctIndex": 0,
+      "explanation": "Tendulkar made 200 not out against South Africa at Gwalior in February 2010."
+    },
+    {
+      "id": "spc-08",
+      "category": "sportsAndCricket",
+      "difficulty": "hard",
+      "prompt": "Which bowler holds the record for the most wickets in Test cricket?",
+      "options": [
+        "Shane Warne",
+        "Muttiah Muralitharan",
+        "Anil Kumble",
+        "James Anderson"
+      ],
+      "correctIndex": 1,
+      "explanation": "Muralitharan finished his Test career with 800 wickets, the highest total in the format's history."
+    },
+    {
+      "id": "spc-09",
+      "category": "sportsAndCricket",
+      "difficulty": "hard",
+      "prompt": "What is the national sport of Sri Lanka?",
+      "options": [
+        "Cricket",
+        "Football",
+        "Volleyball",
+        "Badminton"
+      ],
+      "correctIndex": 2,
+      "explanation": "Volleyball was declared Sri Lanka's national sport in 1991, although cricket draws far larger audiences."
+    },
+    {
+      "id": "spc-10",
+      "category": "sportsAndCricket",
+      "difficulty": "hard",
+      "prompt": "Which batter holds the highest individual Test score made by a Sri Lankan?",
+      "options": [
+        "Kumar Sangakkara",
+        "Sanath Jayasuriya",
+        "Aravinda de Silva",
+        "Mahela Jayawardene"
+      ],
+      "correctIndex": 3,
+      "explanation": "Jayawardene scored 374 against South Africa in Colombo in 2006."
+    },
+    {
+      "id": "scn-01",
+      "category": "scienceAndNature",
+      "difficulty": "easy",
+      "prompt": "Which gas do plants absorb from the air during photosynthesis?",
+      "options": [
+        "Carbon dioxide",
+        "Oxygen",
+        "Nitrogen",
+        "Hydrogen"
+      ],
+      "correctIndex": 0,
+      "explanation": "Plants take in carbon dioxide and release oxygen as a by-product of photosynthesis."
+    },
+    {
+      "id": "scn-02",
+      "category": "scienceAndNature",
+      "difficulty": "easy",
+      "prompt": "How many bones are there in the adult human body?",
+      "options": [
+        "180",
+        "206",
+        "256",
+        "300"
+      ],
+      "correctIndex": 1,
+      "explanation": "Babies are born with around 270 bones, many of which fuse during growth to leave 206 in adulthood."
+    },
+    {
+      "id": "scn-03",
+      "category": "scienceAndNature",
+      "difficulty": "easy",
+      "prompt": "What is the largest organ of the human body?",
+      "options": [
+        "The liver",
+        "The brain",
+        "The skin",
+        "The lungs"
+      ],
+      "correctIndex": 2,
+      "explanation": "An adult's skin covers roughly two square metres and accounts for about 15 percent of body weight."
+    },
+    {
+      "id": "scn-04",
+      "category": "scienceAndNature",
+      "difficulty": "easy",
+      "prompt": "Which animal is the fastest over land?",
+      "options": [
+        "Lion",
+        "Pronghorn",
+        "Greyhound",
+        "Cheetah"
+      ],
+      "correctIndex": 3,
+      "explanation": "A cheetah can reach around 100 kilometres per hour, though only in short bursts."
+    },
+    {
+      "id": "scn-05",
+      "category": "scienceAndNature",
+      "difficulty": "medium",
+      "prompt": "What is the chemical symbol for potassium?",
+      "options": [
+        "K",
+        "P",
+        "Po",
+        "Pt"
+      ],
+      "correctIndex": 0,
+      "explanation": "The symbol K comes from kalium, the Latin name for the element."
+    },
+    {
+      "id": "scn-06",
+      "category": "scienceAndNature",
+      "difficulty": "medium",
+      "prompt": "Which part of a cell contains most of its DNA?",
+      "options": [
+        "The ribosome",
+        "The nucleus",
+        "The cytoplasm",
+        "The cell wall"
+      ],
+      "correctIndex": 1,
+      "explanation": "The nucleus houses chromosomal DNA, although mitochondria carry a small separate genome."
+    },
+    {
+      "id": "scn-07",
+      "category": "scienceAndNature",
+      "difficulty": "medium",
+      "prompt": "Which planet has the shortest day in our solar system?",
+      "options": [
+        "Mercury",
+        "Mars",
+        "Jupiter",
+        "Venus"
+      ],
+      "correctIndex": 2,
+      "explanation": "Despite being the largest planet, Jupiter rotates once in just under ten hours."
+    },
+    {
+      "id": "scn-08",
+      "category": "scienceAndNature",
+      "difficulty": "medium",
+      "prompt": "Approximately how fast does light travel in a vacuum?",
+      "options": [
+        "3,000 km per second",
+        "30,000 km per second",
+        "3 million km per second",
+        "300,000 km per second"
+      ],
+      "correctIndex": 3,
+      "explanation": "The exact figure is 299,792,458 metres per second, a fixed constant used to define the metre."
+    },
+    {
+      "id": "scn-09",
+      "category": "scienceAndNature",
+      "difficulty": "hard",
+      "prompt": "Which element is the most abundant in the Earth's crust by mass?",
+      "options": [
+        "Oxygen",
+        "Silicon",
+        "Iron",
+        "Aluminium"
+      ],
+      "correctIndex": 0,
+      "explanation": "Oxygen makes up roughly 46 percent of the crust by mass, bound up in silicate minerals."
+    },
+    {
+      "id": "scn-10",
+      "category": "scienceAndNature",
+      "difficulty": "hard",
+      "prompt": "Which metal has the highest melting point?",
+      "options": [
+        "Titanium",
+        "Tungsten",
+        "Platinum",
+        "Iron"
+      ],
+      "correctIndex": 1,
+      "explanation": "Tungsten melts at about 3,422 degrees Celsius, which is why it was used for incandescent lamp filaments."
+    },
+    {
+      "id": "mov-01",
+      "category": "moviesAndEntertainment",
+      "difficulty": "easy",
+      "prompt": "The line “May the Force be with you” comes from which film series?",
+      "options": [
+        "Star Trek",
+        "Dune",
+        "Star Wars",
+        "Avatar"
+      ],
+      "correctIndex": 2,
+      "explanation": "The phrase recurs throughout the Star Wars saga, first appearing in the 1977 original film."
+    },
+    {
+      "id": "mov-02",
+      "category": "moviesAndEntertainment",
+      "difficulty": "easy",
+      "prompt": "Which singer is widely known as the “King of Pop”?",
+      "options": [
+        "Elvis Presley",
+        "Prince",
+        "Freddie Mercury",
+        "Michael Jackson"
+      ],
+      "correctIndex": 3,
+      "explanation": "The title became closely associated with Jackson during the success of his album Thriller."
+    },
+    {
+      "id": "mov-03",
+      "category": "moviesAndEntertainment",
+      "difficulty": "easy",
+      "prompt": "In The Lion King, what is the name of the young lion who is heir to the throne?",
+      "options": [
+        "Simba",
+        "Mufasa",
+        "Nala",
+        "Scar"
+      ],
+      "correctIndex": 0,
+      "explanation": "Simba means lion in Swahili, the language behind several names in the film."
+    },
+    {
+      "id": "mov-04",
+      "category": "moviesAndEntertainment",
+      "difficulty": "easy",
+      "prompt": "Frodo Baggins is a central character in which film trilogy?",
+      "options": [
+        "The Chronicles of Narnia",
+        "The Lord of the Rings",
+        "Harry Potter",
+        "His Dark Materials"
+      ],
+      "correctIndex": 1,
+      "explanation": "Frodo is played by Elijah Wood in Peter Jackson's adaptation of Tolkien's novels."
+    },
+    {
+      "id": "mov-05",
+      "category": "moviesAndEntertainment",
+      "difficulty": "medium",
+      "prompt": "Which studio produced the animated film Spirited Away?",
+      "options": [
+        "Pixar",
+        "DreamWorks",
+        "Studio Ghibli",
+        "Illumination"
+      ],
+      "correctIndex": 2,
+      "explanation": "Spirited Away was directed by Hayao Miyazaki and won the Academy Award for Best Animated Feature."
+    },
+    {
+      "id": "mov-06",
+      "category": "moviesAndEntertainment",
+      "difficulty": "medium",
+      "prompt": "Who directed the 1993 film Jurassic Park?",
+      "options": [
+        "James Cameron",
+        "Ridley Scott",
+        "George Lucas",
+        "Steven Spielberg"
+      ],
+      "correctIndex": 3,
+      "explanation": "Spielberg combined animatronics with early computer-generated imagery to create the dinosaurs."
+    },
+    {
+      "id": "mov-07",
+      "category": "moviesAndEntertainment",
+      "difficulty": "medium",
+      "prompt": "Which band released the album Abbey Road?",
+      "options": [
+        "The Beatles",
+        "The Rolling Stones",
+        "Pink Floyd",
+        "The Who"
+      ],
+      "correctIndex": 0,
+      "explanation": "Abbey Road was released in 1969 and was the last album the band recorded together."
+    },
+    {
+      "id": "mov-08",
+      "category": "moviesAndEntertainment",
+      "difficulty": "medium",
+      "prompt": "Which actor played Tony Stark in the Marvel Cinematic Universe?",
+      "options": [
+        "Chris Evans",
+        "Robert Downey Jr.",
+        "Mark Ruffalo",
+        "Chris Hemsworth"
+      ],
+      "correctIndex": 1,
+      "explanation": "Downey Jr. first appeared as Tony Stark in Iron Man in 2008."
+    },
+    {
+      "id": "mov-09",
+      "category": "moviesAndEntertainment",
+      "difficulty": "hard",
+      "prompt": "Which film won the Academy Award for Best Picture at the 2020 ceremony?",
+      "options": [
+        "1917",
+        "Joker",
+        "Parasite",
+        "Green Book"
+      ],
+      "correctIndex": 2,
+      "explanation": "Parasite was the first film not in the English language to win Best Picture."
+    },
+    {
+      "id": "mov-10",
+      "category": "moviesAndEntertainment",
+      "difficulty": "hard",
+      "prompt": "Who composed the musical score for the film Inception?",
+      "options": [
+        "John Williams",
+        "Howard Shore",
+        "Ennio Morricone",
+        "Hans Zimmer"
+      ],
+      "correctIndex": 3,
+      "explanation": "Zimmer built the score around a slowed-down sample of the Edith Piaf song used in the film."
+    },
+    {
+      "id": "gkn-01",
+      "category": "generalKnowledge",
+      "difficulty": "easy",
+      "prompt": "What is the capital city of Japan?",
+      "options": [
+        "Tokyo",
+        "Osaka",
+        "Kyoto",
+        "Seoul"
+      ],
+      "correctIndex": 0,
+      "explanation": "Tokyo became the capital in 1868, replacing Kyoto."
+    },
+    {
+      "id": "gkn-02",
+      "category": "generalKnowledge",
+      "difficulty": "easy",
+      "prompt": "Which is the largest ocean on Earth?",
+      "options": [
+        "The Atlantic Ocean",
+        "The Pacific Ocean",
+        "The Indian Ocean",
+        "The Arctic Ocean"
+      ],
+      "correctIndex": 1,
+      "explanation": "The Pacific covers about a third of the Earth's surface, more than all land combined."
+    },
+    {
+      "id": "gkn-03",
+      "category": "generalKnowledge",
+      "difficulty": "easy",
+      "prompt": "How many continents are there on Earth?",
+      "options": [
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "correctIndex": 2,
+      "explanation": "The seven are Africa, Antarctica, Asia, Europe, North America, Oceania and South America."
+    },
+    {
+      "id": "gkn-04",
+      "category": "generalKnowledge",
+      "difficulty": "easy",
+      "prompt": "In which country would you find the Taj Mahal?",
+      "options": [
+        "Pakistan",
+        "Iran",
+        "Bangladesh",
+        "India"
+      ],
+      "correctIndex": 3,
+      "explanation": "The Taj Mahal stands at Agra and was completed in the mid-17th century as a mausoleum."
+    },
+    {
+      "id": "gkn-05",
+      "category": "generalKnowledge",
+      "difficulty": "easy",
+      "prompt": "What is the currency of Japan?",
+      "options": [
+        "Yen",
+        "Won",
+        "Yuan",
+        "Baht"
+      ],
+      "correctIndex": 0,
+      "explanation": "The yen was adopted in 1871 as part of Japan's modernisation of its monetary system."
+    },
+    {
+      "id": "gkn-06",
+      "category": "generalKnowledge",
+      "difficulty": "medium",
+      "prompt": "Which river flows through the city of Cairo?",
+      "options": [
+        "The Congo",
+        "The Nile",
+        "The Niger",
+        "The Zambezi"
+      ],
+      "correctIndex": 1,
+      "explanation": "Cairo grew along the Nile near the point where the river fans out into its delta."
+    },
+    {
+      "id": "gkn-07",
+      "category": "generalKnowledge",
+      "difficulty": "medium",
+      "prompt": "Mount Kilimanjaro is located in which country?",
+      "options": [
+        "Kenya",
+        "Uganda",
+        "Tanzania",
+        "Ethiopia"
+      ],
+      "correctIndex": 2,
+      "explanation": "Kilimanjaro is Africa's highest mountain at about 5,895 metres."
+    },
+    {
+      "id": "gkn-08",
+      "category": "generalKnowledge",
+      "difficulty": "medium",
+      "prompt": "What is the smallest country in the world by area?",
+      "options": [
+        "Monaco",
+        "San Marino",
+        "Liechtenstein",
+        "Vatican City"
+      ],
+      "correctIndex": 3,
+      "explanation": "Vatican City covers roughly 0.49 square kilometres within the city of Rome."
+    },
+    {
+      "id": "gkn-09",
+      "category": "generalKnowledge",
+      "difficulty": "hard",
+      "prompt": "Lake Baikal, the world's deepest lake, lies in which country?",
+      "options": [
+        "Russia",
+        "Mongolia",
+        "Kazakhstan",
+        "China"
+      ],
+      "correctIndex": 0,
+      "explanation": "Baikal reaches over 1,600 metres deep and holds around a fifth of the world's unfrozen fresh surface water."
+    },
+    {
+      "id": "gkn-10",
+      "category": "generalKnowledge",
+      "difficulty": "hard",
+      "prompt": "Which strait separates Asia from North America?",
+      "options": [
+        "The Strait of Malacca",
+        "The Bering Strait",
+        "The Strait of Gibraltar",
+        "Bass Strait"
+      ],
+      "correctIndex": 1,
+      "explanation": "The Bering Strait is about 82 kilometres wide at its narrowest point, between Russia and Alaska."
+    }
+  ]
+}

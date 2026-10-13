@@ -1,0 +1,35 @@
+# ---- macOS ----
+.DS_Store
+
+# ---- Xcode build output ----
+build/
+DerivedData/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# ---- Xcode user-specific state ----
+# Window layouts, breakpoints and per-user scheme settings. These change on
+# every machine and would cause pointless merge conflicts.
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+# Shared schemes ARE committed (xcshareddata) so the project builds and tests
+# identically for anyone who clones it.
+
+# ---- Swift Package Manager ----
+.swiftpm/
+.build/
+Packages/
+Package.resolved
+
+# ---- Test output ----
+*.xcresult
+
+# ---- Playgrounds ----
+timeline.xctimeline
+playground.xcworkspace
