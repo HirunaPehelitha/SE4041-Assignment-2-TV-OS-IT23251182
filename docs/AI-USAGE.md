@@ -89,6 +89,25 @@ Test count rose to 91.
 `Spacer`s shared the slack; two actor-isolation warnings of the same kind as
 Stage 3.
 
+### Stage 5 — Player setup
+**Prompt:** Build player setup for two to four local players: two required
+slots, add a third or fourth, an avatar selector, a tvOS-compatible name field,
+visually distinct slots, a category summary, Start Battle and Back. Validate at
+least two players, reject blank names, handle duplicates predictably, prevent
+more than four, and prevent starting when invalid. Pass the category and players
+into the game session, with no fake gameplay or placeholder scores.
+
+**Produced:** `PlayerAvatar`, an extended `Player`, `GameSession`,
+`PlayerRosterStore`, `PlayerSetupViewModel`, `PlayerSlotCard`, a rewritten
+`PlayerSetupView` and `MatchStartView`. Test count rose to 138.
+
+**Issues found and fixed:** marking data types `nonisolated` individually had
+become unmanageable and several cases were flagged as future Swift 6 errors, so
+the project default actor isolation was switched to `nonisolated`; a stale
+DerivedData directory left behind by an earlier temporary clone meant the
+simulator was being given an old build, which was caught by comparing the built
+dylib's timestamp against the build time.
+
 ---
 
 ## What I reviewed and verified myself
