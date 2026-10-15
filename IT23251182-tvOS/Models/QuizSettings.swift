@@ -12,7 +12,7 @@ import Foundation
 /// `Codable` so a completed match can store the exact settings it was played
 /// under — a score of 1,200 means something very different over five easy
 /// questions than over ten hard ones.
-nonisolated struct QuizSettings: Codable, Equatable, Hashable {
+struct QuizSettings: Codable, Equatable, Hashable {
 
     /// The subject to draw from. `nil` means a mixed round across every category.
     var category: QuizCategory?
