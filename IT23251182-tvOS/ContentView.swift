@@ -25,6 +25,12 @@ struct ContentView: View {
     @State private var categorySelection: CategorySelectViewModel
     @State private var settings = AppSettings()
 
+    /// Saved match history, shared by the results screen and the leaderboard.
+    private let historyStore = MatchHistoryStore()
+
+    /// Built once and shared, so audio is configured a single time per launch.
+    @State private var sounds: SoundEffectPlayer?
+
     /// The navigation stack's path. Held here rather than inside a child so a
     /// screen can hand a value back up (the chosen category) and this view can
     /// decide what to push next.
@@ -62,6 +68,13 @@ struct ContentView: View {
         }
         .environment(settings)
         .environment(\.brandAnimationsEnabled, animationsEnabled)
+        .onAppear {
+            // The player reads the preference at play time, so toggling sound
+            // in Settings takes effect immediately.
+            if sounds == nil {
+                sounds = SoundEffectPlayer(isEnabled: { [settings] in settings.soundEffects })
+            }
+        }
         // tvOS renders light-on-dark by default, but stating it explicitly means
         // the brand palette is never recoloured by a system appearance change.
         .preferredColorScheme(.dark)
@@ -92,25 +105,51 @@ struct ContentView: View {
             }
 
         case .quiz(let session):
-            QuizGameView(session: session) { result in
+            QuizGameView(
+                viewModel: QuizGameViewModel(session: session,
+                                             questionDuration: settings.questionDuration,
+                                             sounds: sounds,
+                                             adaptiveDifficultyEnabled: settings.adaptiveDifficulty)
+            ) { result in
                 // Replace the stack rather than pushing: a finished match must
                 // not be reachable again with the Back button.
                 path = [.results(result)]
             }
+            // Ties the engine's lifetime to this specific session, so "Play
+            // Again" builds a genuinely fresh match rather than reusing state.
+            .id(session.id)
 
         case .results(let result):
-            MatchResultsView(result: result) {
-                path.removeAll()
-            }
+            MatchResultsView(
+                viewModel: MatchResultsViewModel(result: result,
+                                                 repository: repository,
+                                                 historyStore: historyStore),
+                onPlayAgain: { session in
+                    // Replace the stack so the finished match is gone for good.
+                    path = [.quiz(session)]
+                },
+                onReviewAnswers: { finished in
+                    path.append(.reviewAnswers(finished))
+                },
+                onReturnHome: {
+                    path.removeAll()
+                }
+            )
+            .id(result.id)
+
+        case .reviewAnswers(let result):
+            ReviewAnswersView(result: result)
 
         case .howToPlay:
             HowToPlayView()
 
         case .leaderboard:
-            LeaderboardView()
+            LeaderboardView(store: historyStore)
 
         case .settings:
-            SettingsView(viewModel: viewModel)
+            SettingsView(viewModel: viewModel) {
+                path.append(.howToPlay)
+            }
         }
     }
 }

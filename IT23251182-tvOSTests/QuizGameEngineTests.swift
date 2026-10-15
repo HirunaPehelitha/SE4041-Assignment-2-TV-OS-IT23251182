@@ -93,7 +93,7 @@ final class QuizGameEngineTests: XCTestCase {
     func testCountdownStartsAtTheQuestionsTimeLimit() {
         let vm = engine(difficulty: .hard)
         vm.start()
-        XCTAssertEqual(vm.remainingSeconds, Difficulty.hard.timeLimit)
+        XCTAssertEqual(vm.remainingSeconds, Difficulty.hard.baseTimeLimit)
     }
 
     // MARK: Correct answers
@@ -157,7 +157,7 @@ final class QuizGameEngineTests: XCTestCase {
         let vm = engine(difficulty: .easy)
         vm.start()
 
-        for _ in 0..<Difficulty.easy.timeLimit { vm.tick() }
+        for _ in 0..<Difficulty.easy.baseTimeLimit { vm.tick() }
 
         XCTAssertEqual(vm.phase.outcome, .timedOut)
         XCTAssertEqual(score(vm, "P1"), 0)
@@ -167,7 +167,7 @@ final class QuizGameEngineTests: XCTestCase {
     func testTimeoutCountsAsAnAnsweredQuestion() {
         let vm = engine()
         vm.start()
-        for _ in 0..<Difficulty.easy.timeLimit { vm.tick() }
+        for _ in 0..<Difficulty.easy.baseTimeLimit { vm.tick() }
 
         XCTAssertEqual(vm.standings.first { $0.player.name == "P1" }?.answeredCount, 1)
     }
@@ -180,7 +180,7 @@ final class QuizGameEngineTests: XCTestCase {
         vm.tick()
 
         XCTAssertEqual(vm.phase, .asking(index: 0))
-        XCTAssertEqual(vm.remainingSeconds, Difficulty.easy.timeLimit - 2)
+        XCTAssertEqual(vm.remainingSeconds, Difficulty.easy.baseTimeLimit - 2)
     }
 
     func testTickAfterAnsweringCannotChangeAnything() {
@@ -237,7 +237,7 @@ final class QuizGameEngineTests: XCTestCase {
     func testAnsweringAfterTimeoutIsIgnored() {
         let vm = engine()
         vm.start()
-        for _ in 0..<Difficulty.easy.timeLimit { vm.tick() }
+        for _ in 0..<Difficulty.easy.baseTimeLimit { vm.tick() }
 
         vm.submitAnswer(correctOption)
 
@@ -386,7 +386,7 @@ final class QuizGameEngineTests: XCTestCase {
         let vm = engine(players: 2, questions: 2)
         vm.start()
         for _ in 0..<2 {
-            for _ in 0..<Difficulty.easy.timeLimit { vm.tick() }
+            for _ in 0..<Difficulty.easy.baseTimeLimit { vm.tick() }
             vm.continueAfterReveal()
         }
 
@@ -430,7 +430,7 @@ final class QuizGameEngineTests: XCTestCase {
         vm.start()
         XCTAssertEqual(vm.timeFraction, 1, accuracy: 0.001)
 
-        for _ in 0..<(Difficulty.medium.timeLimit / 2) { vm.tick() }
+        for _ in 0..<(Difficulty.medium.baseTimeLimit / 2) { vm.tick() }
 
         XCTAssertEqual(vm.timeFraction, 0.5, accuracy: 0.05)
     }
@@ -450,7 +450,7 @@ final class QuizGameEngineTests: XCTestCase {
                                                                    questions: bank,
                                                                    rejected: []))
         )
-        try? repository.load()
+        _ = try? repository.load()
 
         var rng = SeededRandomNumberGenerator(seed: 2026)
         let prepared = repository.makeQuestionSet(
@@ -505,6 +505,6 @@ final class MatchScoringTests: XCTestCase {
     }
 
     func testDifficultyNoLongerAffectsScoreButStillAffectsTime() {
-        XCTAssertLessThan(Difficulty.easy.timeLimit, Difficulty.hard.timeLimit)
+        XCTAssertLessThan(Difficulty.easy.baseTimeLimit, Difficulty.hard.baseTimeLimit)
     }
 }

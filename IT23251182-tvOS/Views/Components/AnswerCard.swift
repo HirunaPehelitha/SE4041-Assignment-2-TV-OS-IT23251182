@@ -208,6 +208,10 @@ struct CountdownRing: View {
             }
         }
         .frame(width: 132, height: 132)
+        // Only in the last quarter, and only one step — enough to catch the eye
+        // without becoming a distraction while someone is reading the question.
+        .scaleEffect(animated && isRunning && fraction <= 0.25 ? 1.05 : 1.0)
+        .animation(animated ? .easeInOut(duration: 0.5) : nil, value: fraction <= 0.25)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(isRunning ? "\(max(0, secondsRemaining)) seconds remaining" : "Timer stopped")
     }
@@ -219,11 +223,17 @@ struct CountdownRing: View {
 struct ScoreStrip: View {
     let standings: [PlayerScore]
     let currentPlayerID: UUID?
+    /// Briefly highlighted after scoring, so a point landing is noticeable
+    /// without anyone having to watch the number.
+    var justScoredPlayerID: UUID? = nil
+
+    @Environment(\.brandAnimationsEnabled) private var animated
 
     var body: some View {
         HStack(spacing: 16) {
             ForEach(standings) { entry in
                 let isCurrent = entry.player.id == currentPlayerID
+                let justScored = entry.player.id == justScoredPlayerID
                 let color = Brand.playerColor(at: entry.player.colorIndex)
 
                 HStack(spacing: 12) {
@@ -234,20 +244,28 @@ struct ScoreStrip: View {
                         .font(BrandFont.caption)
                         .foregroundStyle(isCurrent ? Brand.textPrimary : Brand.textSecondary)
                         .lineLimit(1)
+                        .minimumScaleFactor(0.7)
                     Text("\(entry.score)")
                         .font(BrandFont.caption)
                         .foregroundStyle(color)
                         .monospacedDigit()
+                        // Rolls the digits rather than swapping them.
+                        .contentTransition(.numericText())
+                        .animation(animated ? .snappy(duration: 0.3) : nil, value: entry.score)
                 }
                 .padding(.horizontal, 20)
                 .padding(.vertical, 12)
                 .background(
-                    Capsule().fill(isCurrent ? color.opacity(0.16) : Color.white.opacity(0.04))
+                    Capsule().fill(justScored ? color.opacity(0.30)
+                                              : (isCurrent ? color.opacity(0.16) : Color.white.opacity(0.04)))
                 )
                 .overlay(
-                    Capsule().strokeBorder(isCurrent ? color : Brand.hairline,
-                                           lineWidth: isCurrent ? 3 : 2)
+                    Capsule().strokeBorder(justScored ? color : (isCurrent ? color : Brand.hairline),
+                                           lineWidth: justScored ? 4 : (isCurrent ? 3 : 2))
                 )
+                .scaleEffect(animated && justScored ? 1.06 : 1.0)
+                .animation(animated ? .spring(response: 0.35, dampingFraction: 0.6) : nil,
+                           value: justScored)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(entry.player.name) \(entry.score) points\(isCurrent ? ", taking this turn" : "")")
             }

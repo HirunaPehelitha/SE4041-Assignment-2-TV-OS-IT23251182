@@ -32,44 +32,6 @@
 import Foundation
 import Observation
 
-// MARK: - Turn outcome
-
-/// What happened on one question.
-enum TurnOutcome: Equatable, Hashable {
-    case correct(selectedIndex: Int)
-    case incorrect(selectedIndex: Int)
-    case timedOut
-
-    var isCorrect: Bool {
-        if case .correct = self { return true }
-        return false
-    }
-
-    /// The index the player chose, or `nil` if they ran out of time.
-    var selectedIndex: Int? {
-        switch self {
-        case .correct(let index), .incorrect(let index): return index
-        case .timedOut: return nil
-        }
-    }
-
-    var pointsAwarded: Int {
-        switch self {
-        case .correct:   return MatchScoring.correctAnswerPoints
-        case .incorrect: return MatchScoring.incorrectAnswerPoints
-        case .timedOut:  return MatchScoring.timeoutPoints
-        }
-    }
-
-    var headline: String {
-        switch self {
-        case .correct:   return "Correct"
-        case .incorrect: return "Not quite"
-        case .timedOut:  return "Out of time"
-        }
-    }
-}
-
 // MARK: - Phase
 
 /// The match lifecycle. Exactly one of these is true at any moment.
@@ -138,14 +100,54 @@ final class QuizGameViewModel {
     /// Questions already scored. The independent guard described above.
     private var scoredQuestionIDs: Set<String> = []
 
+    /// Every resolved turn, in play order. Carried into the result so the
+    /// results screen can show what each player actually answered.
+    private(set) var turns: [TurnRecord] = []
+
+    /// Indices into `session.questions` not yet asked. Adaptive selection picks
+    /// from here, so a question can never be served twice and the match length
+    /// stays exactly what player setup promised.
+    private var remainingQuestionIndices: [Int] = []
+
+    /// Which question in the session is on screen right now.
+    private var currentQuestionPoolIndex: Int?
+
+    /// Recent correctness per player, oldest first. A timeout counts as a wrong
+    /// answer, because the policy is about how the player is coping.
+    private var recentAnswersByPlayerID: [UUID: [Bool]] = [:]
+
     private var timerTask: Task<Void, Never>?
 
     /// Tests pass `false` and drive `tick()` by hand, so timeout behaviour is
     /// verified instantly and deterministically instead of waiting on a clock.
     private let runsCountdown: Bool
 
-    init(session: GameSession, runsCountdown: Bool = true) {
+    /// The player's chosen pace, applied to every question's base time limit.
+    private let questionDuration: QuestionDuration
+
+    /// Answer feedback. Optional so tests run silently, and the player itself
+    /// checks the sound preference at play time.
+    private let sounds: SoundPlaying?
+
+    /// When off, questions are served in the order the session already shuffled
+    /// them. Defaults to off so the engine is deterministic unless adaptation is
+    /// explicitly asked for; the app switches it on from Settings.
+    private let adaptiveDifficultyEnabled: Bool
+
+    /// Injectable so adaptive selection is reproducible in tests.
+    private var generator: RandomNumberGenerator
+
+    init(session: GameSession,
+         questionDuration: QuestionDuration = .standard,
+         sounds: SoundPlaying? = nil,
+         adaptiveDifficultyEnabled: Bool = false,
+         generator: RandomNumberGenerator = SystemRandomNumberGenerator(),
+         runsCountdown: Bool = true) {
         self.session = session
+        self.questionDuration = questionDuration
+        self.sounds = sounds
+        self.adaptiveDifficultyEnabled = adaptiveDifficultyEnabled
+        self.generator = generator
         self.runsCountdown = runsCountdown
         self.scoresByPlayerID = Dictionary(
             uniqueKeysWithValues: session.players.map { ($0.id, PlayerScore(player: $0)) }
@@ -157,9 +159,22 @@ final class QuizGameViewModel {
     var currentQuestionIndex: Int? { phase.questionIndex }
 
     var currentQuestion: PreparedQuestion? {
-        guard let index = phase.questionIndex,
-              session.questions.indices.contains(index) else { return nil }
-        return session.questions[index]
+        guard phase.questionIndex != nil,
+              let poolIndex = currentQuestionPoolIndex,
+              session.questions.indices.contains(poolIndex) else { return nil }
+        return session.questions[poolIndex]
+    }
+
+    /// The band the current player is in, for the on-screen explanation.
+    /// `nil` when adaptive selection is switched off.
+    var currentPerformanceBand: PerformanceBand? {
+        guard adaptiveDifficultyEnabled, let player = currentPlayer else { return nil }
+        return AdaptiveDifficultyPolicy.band(for: recentAnswersByPlayerID[player.id] ?? [])
+    }
+
+    /// Recent answers for a player, used by the band display and by tests.
+    func recentAnswers(for player: Player) -> [Bool] {
+        recentAnswersByPlayerID[player.id] ?? []
     }
 
     var currentPlayer: Player? {
@@ -194,9 +209,18 @@ final class QuizGameViewModel {
         MatchResult(settings: session.settings, scores: standings).ranking
     }
 
+    /// A fresh session with the same players and settings, for "Play Again".
+    /// New id and newly shuffled questions, so nothing from this match carries
+    /// over — the engine for the next match starts from zero.
+    func rematchSession(using repository: QuestionRepository) -> GameSession {
+        GameSession(players: session.players,
+                    settings: session.settings,
+                    questions: repository.makeQuestionSet(for: session.settings))
+    }
+
     var isLastQuestion: Bool {
-        guard let index = phase.questionIndex else { return false }
-        return index == totalQuestions - 1
+        guard let turn = phase.questionIndex else { return false }
+        return turn >= session.questionCount - 1 || remainingQuestionIndices.isEmpty
     }
 
     /// Label for the button shown after an answer is revealed.
@@ -208,7 +232,8 @@ final class QuizGameViewModel {
     }
 
     var timeLimitForCurrentQuestion: Int {
-        currentQuestion?.difficulty.timeLimit ?? 0
+        guard let question = currentQuestion else { return 0 }
+        return questionDuration.seconds(for: question.difficulty)
     }
 
     /// 1 → full clock, 0 → expired. Used by the countdown ring.
@@ -228,7 +253,8 @@ final class QuizGameViewModel {
             finish()
             return
         }
-        beginQuestion(at: 0)
+        remainingQuestionIndices = Array(session.questions.indices)
+        beginQuestion(atTurn: 0)
     }
 
     /// Records an answer for the current question.
@@ -262,11 +288,13 @@ final class QuizGameViewModel {
 
     /// Moves on from a revealed answer: the next question, or the results.
     func continueAfterReveal() {
-        guard case .revealing(let index, _) = phase else { return }
+        guard case .revealing(let turn, _) = phase else { return }
 
-        let next = index + 1
-        if session.questions.indices.contains(next) {
-            beginQuestion(at: next)
+        let nextTurn = turn + 1
+        // The match ends at the planned length, or sooner if the pool somehow
+        // runs dry — whichever comes first.
+        if nextTurn < session.questionCount && !remainingQuestionIndices.isEmpty {
+            beginQuestion(atTurn: nextTurn)
         } else {
             finish()
         }
@@ -280,45 +308,101 @@ final class QuizGameViewModel {
 
     // MARK: Transitions
 
-    private func beginQuestion(at index: Int) {
-        guard session.questions.indices.contains(index) else {
+    /// Opens the next question.
+    ///
+    /// `turn` is the position in the match (0-based), which is what drives whose
+    /// turn it is and the progress bar. *Which* question fills that turn is
+    /// decided here — in session order normally, or by the adaptive policy when
+    /// it is switched on.
+    private func beginQuestion(atTurn turn: Int) {
+        guard let poolIndex = takeNextQuestionIndex() else {
             finish()
             return
         }
 
-        phase = .asking(index: index)
-        remainingSeconds = session.questions[index].difficulty.timeLimit
+        currentQuestionPoolIndex = poolIndex
+        phase = .asking(index: turn)
+        remainingSeconds = questionDuration.seconds(for: session.questions[poolIndex].difficulty)
         startCountdown()
     }
 
-    /// The single place a turn is scored and frozen.
+    /// Removes and returns the next question's index in `session.questions`.
+    ///
+    /// Adaptive selection can only ever choose from questions already in this
+    /// session, so the result is always valid and always in the chosen category.
+    private func takeNextQuestionIndex() -> Int? {
+        guard !remainingQuestionIndices.isEmpty else { return nil }
+
+        guard adaptiveDifficultyEnabled,
+              let player = session.player(forQuestionIndex: turns.count)
+        else {
+            return remainingQuestionIndices.removeFirst()
+        }
+
+        let band = AdaptiveDifficultyPolicy.band(for: recentAnswersByPlayerID[player.id] ?? [])
+        let candidates = remainingQuestionIndices.map { session.questions[$0] }
+
+        guard let choice = AdaptiveDifficultyPolicy.selectIndex(from: candidates,
+                                                               band: band,
+                                                               using: &generator) else {
+            // Cannot happen with a non-empty pool, but falling back keeps the
+            // match running rather than ending it early.
+            return remainingQuestionIndices.removeFirst()
+        }
+        return remainingQuestionIndices.remove(at: choice)
+    }
+
+    /// The single place a turn is scored, recorded and frozen.
     private func resolve(questionIndex index: Int, outcome: TurnOutcome) {
         cancelCountdown()
 
         if let player = session.player(forQuestionIndex: index),
-           session.questions.indices.contains(index) {
-            award(outcome, for: session.questions[index].id, to: player)
+           let poolIndex = currentQuestionPoolIndex,
+           session.questions.indices.contains(poolIndex) {
+            let question = session.questions[poolIndex]
+            // `award` is guarded against scoring twice; the turn log is appended
+            // in the same guarded step so the two can never disagree.
+            if award(outcome, for: question.id, to: player) {
+                turns.append(TurnRecord(questionNumber: index + 1,
+                                        question: question,
+                                        player: player,
+                                        outcome: outcome))
+                // Feeds the policy for this player's next turn. Recorded inside
+                // the same guard as scoring, so a repeated press cannot skew it.
+                recentAnswersByPlayerID[player.id, default: []].append(outcome.isCorrect)
+            }
         }
 
         phase = .revealing(index: index, outcome: outcome)
+
+        switch outcome {
+        case .correct:   sounds?.play(.correct)
+        case .incorrect: sounds?.play(.incorrect)
+        case .timedOut:  sounds?.play(.timeout)
+        }
     }
 
-    private func award(_ outcome: TurnOutcome, for questionID: String, to player: Player) {
+    /// - Returns: `true` if this turn was scored, `false` if it had already been.
+    @discardableResult
+    private func award(_ outcome: TurnOutcome, for questionID: String, to player: Player) -> Bool {
         // Second lock on double scoring: a question can only ever pay out once.
-        guard !scoredQuestionIDs.contains(questionID) else { return }
+        guard !scoredQuestionIDs.contains(questionID) else { return false }
         scoredQuestionIDs.insert(questionID)
 
-        guard var score = scoresByPlayerID[player.id] else { return }
+        guard var score = scoresByPlayerID[player.id] else { return false }
         score.score += outcome.pointsAwarded
         score.answeredCount += 1
         if outcome.isCorrect { score.correctCount += 1 }
         scoresByPlayerID[player.id] = score
+        return true
     }
 
     private func finish() {
         cancelCountdown()
         remainingSeconds = 0
-        phase = .finished(MatchResult(settings: session.settings, scores: standings))
+        phase = .finished(MatchResult(settings: session.settings,
+                                      scores: standings,
+                                      turns: turns))
     }
 
     /// The finished result, for the caller that performs the navigation.
