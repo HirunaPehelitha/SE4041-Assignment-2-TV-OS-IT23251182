@@ -41,15 +41,21 @@ struct MatchResult: Identifiable, Codable, Equatable, Hashable {
     let playedAt: Date
     let settings: QuizSettings
     let scores: [PlayerScore]
+    /// Every turn in the order it was played. Defaults to empty so a result can
+    /// still be constructed from scores alone, which the tests and the ranking
+    /// logic rely on.
+    let turns: [TurnRecord]
 
     init(id: UUID = UUID(),
          playedAt: Date = Date(),
          settings: QuizSettings,
-         scores: [PlayerScore]) {
+         scores: [PlayerScore],
+         turns: [TurnRecord] = []) {
         self.id = id
         self.playedAt = playedAt
         self.settings = settings
         self.scores = scores
+        self.turns = turns
     }
 
     /// Players ordered for the scoreboard: highest score first, then the most
@@ -71,7 +77,22 @@ struct MatchResult: Identifiable, Codable, Equatable, Hashable {
 
     var isDraw: Bool { winners.count > 1 }
 
+    /// How many questions the match actually got through. Taken from the turn
+    /// log when there is one, since that is the authoritative record.
     var totalQuestionsAsked: Int {
-        scores.map(\.answeredCount).max() ?? 0
+        turns.isEmpty ? (scores.map(\.answeredCount).max() ?? 0) : turns.count
+    }
+
+    /// Whether there is enough detail stored to review the answers.
+    var canReviewAnswers: Bool { !turns.isEmpty }
+
+    /// Total correct answers across every player.
+    var totalCorrectAnswers: Int { scores.reduce(0) { $0 + $1.correctCount } }
+
+    /// Share of all questions answered correctly, 0...1.
+    var overallAccuracy: Double {
+        let asked = scores.reduce(0) { $0 + $1.answeredCount }
+        guard asked > 0 else { return 0 }
+        return Double(totalCorrectAnswers) / Double(asked)
     }
 }

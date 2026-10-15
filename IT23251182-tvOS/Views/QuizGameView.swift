@@ -26,8 +26,12 @@ struct QuizGameView: View {
     /// Focus on the continue button once the answer is revealed.
     @FocusState private var continueFocused: Bool
 
-    init(session: GameSession, onFinished: @escaping (MatchResult) -> Void) {
-        _viewModel = State(initialValue: QuizGameViewModel(session: session))
+    /// The player whose score just went up, so the strip can flash their chip.
+    /// Cleared when the next question opens.
+    @State private var justScoredPlayerID: UUID?
+
+    init(viewModel: QuizGameViewModel, onFinished: @escaping (MatchResult) -> Void) {
+        _viewModel = State(initialValue: viewModel)
         self.onFinished = onFinished
     }
 
@@ -129,6 +133,24 @@ struct QuizGameView: View {
 
             Spacer()
 
+            if let band = viewModel.currentPerformanceBand {
+                // Adaptive Challenge is explainable by design: the player can
+                // see which way it is leaning and why, while they play.
+                HStack(spacing: 10) {
+                    Image(systemName: band.symbolName)
+                        .font(.system(size: 24, weight: .semibold))
+                    Text(band.displayName)
+                        .font(BrandFont.caption)
+                        .tracking(1.5)
+                }
+                .foregroundStyle(Brand.accent)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .background(Capsule().fill(Brand.accentMuted))
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Adaptive challenge: \(band.displayName). \(band.explanation)")
+            }
+
             VStack(alignment: .trailing, spacing: 2) {
                 Text("QUESTION")
                     .font(BrandFont.caption)
@@ -223,7 +245,8 @@ struct QuizGameView: View {
 
             HStack(alignment: .center, spacing: BrandLayout.gutter) {
                 ScoreStrip(standings: viewModel.standings,
-                           currentPlayerID: viewModel.currentPlayer?.id)
+                           currentPlayerID: viewModel.currentPlayer?.id,
+                           justScoredPlayerID: justScoredPlayerID)
 
                 Spacer()
 
@@ -246,6 +269,14 @@ struct QuizGameView: View {
         // mashing the remote from immediately skipping the reveal.
         .onChange(of: viewModel.phase.isRevealing) { _, revealing in
             if revealing { continueFocused = true }
+        }
+        .onChange(of: viewModel.phase) { _, newPhase in
+            // Flash only on a correct answer; a wrong one has its own feedback.
+            if case .revealing(_, let outcome) = newPhase, outcome.isCorrect {
+                justScoredPlayerID = viewModel.currentPlayer?.id
+            } else if newPhase.isAsking {
+                justScoredPlayerID = nil
+            }
         }
     }
 

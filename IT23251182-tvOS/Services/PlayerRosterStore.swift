@@ -39,12 +39,21 @@ final class PlayerRosterStore {
     /// The last saved roster, or an empty array if there is none or it cannot
     /// be read (for example after a model change).
     func load() -> [Player] {
-        guard let data = defaults.data(forKey: Key.roster),
-              let players = try? JSONDecoder().decode([Player].self, from: data)
-        else { return [] }
+        guard let data = defaults.data(forKey: Key.roster), !data.isEmpty else {
+            return []
+        }
 
-        // Guard against a stored roster larger than the game now supports.
-        return Array(players.prefix(Player.maximumPlayers))
+        do {
+            let players = try JSONDecoder().decode([Player].self, from: data)
+            // Guard against a stored roster larger than the game now supports.
+            return Array(players.prefix(Player.maximumPlayers))
+        } catch {
+            // Unreadable, most likely because the Player model changed. Drop it
+            // so the next save starts clean; a forgotten roster is a minor
+            // inconvenience, a crash on launch is not.
+            defaults.removeObject(forKey: Key.roster)
+            return []
+        }
     }
 
     func clear() {

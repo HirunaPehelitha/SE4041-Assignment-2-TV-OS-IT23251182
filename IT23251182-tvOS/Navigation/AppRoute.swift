@@ -22,6 +22,7 @@ enum AppRoute: Hashable {
     case matchReady(GameSession)     // turn order, before the first question
     case quiz(GameSession)           // the match itself
     case results(MatchResult)        // the final scoreboard
+    case reviewAnswers(MatchResult)  // every question and what was answered
     case howToPlay
     case leaderboard
     case settings

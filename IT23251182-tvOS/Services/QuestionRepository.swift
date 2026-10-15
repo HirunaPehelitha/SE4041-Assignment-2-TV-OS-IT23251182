@@ -303,4 +303,27 @@ final class QuestionRepository {
         var generator = SystemRandomNumberGenerator()
         return makeQuestionSet(for: settings, using: &generator)
     }
+
+    /// How many spare questions a pool carries per question asked, so Adaptive
+    /// Challenge has something to choose between.
+    static let adaptivePoolMultiplier = 2
+
+    /// Builds a pool wider than the round length where the bank allows it.
+    ///
+    /// Returns as many eligible questions as it can, up to
+    /// `questionCount * adaptivePoolMultiplier`. A narrow category simply yields
+    /// a smaller pool — the match still runs, adaptation just has less room.
+    func makeAdaptivePool<R: RandomNumberGenerator>(
+        for settings: QuizSettings,
+        using generator: inout R
+    ) -> [PreparedQuestion] {
+        let wanted = settings.questionCount * Self.adaptivePoolMultiplier
+        let eligible = questions(matching: settings).shuffled(using: &generator)
+        return eligible.prefix(wanted).map { PreparedQuestion(source: $0, shuffledUsing: &generator) }
+    }
+
+    func makeAdaptivePool(for settings: QuizSettings) -> [PreparedQuestion] {
+        var generator = SystemRandomNumberGenerator()
+        return makeAdaptivePool(for: settings, using: &generator)
+    }
 }

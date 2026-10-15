@@ -21,27 +21,44 @@ struct GameSession: Identifiable, Equatable, Hashable {
     /// Turn order. Index 0 takes the first question.
     let players: [Player]
     let settings: QuizSettings
-    /// The questions for this match, already shuffled, with their answer order
-    /// shuffled too. Fixed up front so the round is reproducible.
+    /// The pool of questions available to this match, already shuffled, with
+    /// their answer order shuffled too.
+    ///
+    /// This can be **larger** than the number actually asked. Adaptive Challenge
+    /// needs room to choose: if the pool were exactly the round length, every
+    /// question would be asked regardless and adaptation could only change the
+    /// order, not which questions a player actually faces.
     let questions: [PreparedQuestion]
+
+    /// How many questions this match will ask. Defaults to the whole pool,
+    /// which is the non-adaptive behaviour.
+    let plannedQuestionCount: Int
+
     let startedAt: Date
 
     init(id: UUID = UUID(),
          players: [Player],
          settings: QuizSettings,
          questions: [PreparedQuestion],
+         plannedQuestionCount: Int? = nil,
          startedAt: Date = Date()) {
         self.id = id
         self.players = players
         self.settings = settings
         self.questions = questions
+        self.plannedQuestionCount = plannedQuestionCount ?? questions.count
         self.startedAt = startedAt
     }
 
     // MARK: Derived values
 
     var playerCount: Int { players.count }
-    var questionCount: Int { questions.count }
+
+    /// Questions actually asked — never more than the pool can supply.
+    var questionCount: Int { min(plannedQuestionCount, questions.count) }
+
+    /// Spare questions the adaptive policy can choose between.
+    var poolSize: Int { questions.count }
 
     var categoryDisplayName: String { settings.categoryDisplayName }
 
@@ -54,7 +71,7 @@ struct GameSession: Identifiable, Equatable, Hashable {
     /// Which player answers question `index`, rotating through the roster.
     /// Returns `nil` only for an out-of-range index or an empty roster.
     func player(forQuestionIndex index: Int) -> Player? {
-        guard !players.isEmpty, questions.indices.contains(index) else { return nil }
+        guard !players.isEmpty, index >= 0, index < questionCount else { return nil }
         return players[index % players.count]
     }
 

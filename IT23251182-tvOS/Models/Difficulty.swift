@@ -27,8 +27,9 @@ enum Difficulty: String, CaseIterable, Identifiable, Codable, Equatable, Hashabl
         }
     }
 
-    /// Seconds allowed to answer. Harder questions get more thinking time.
-    var timeLimit: Int {
+    /// Base seconds allowed to answer, before the player's `QuestionDuration`
+    /// preference is applied. Harder questions get more thinking time.
+    var baseTimeLimit: Int {
         switch self {
         case .easy:   return 15
         case .medium: return 20

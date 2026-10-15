@@ -201,7 +201,9 @@ final class PlayerSetupViewModel {
     func startBattle() -> GameSession? {
         guard canStart else { return nil }
 
-        let questions = repository.makeQuestionSet(for: settings)
+        // A pool wider than the round, so Adaptive Challenge has a real choice.
+        // The round length itself is unchanged.
+        let questions = repository.makeAdaptivePool(for: settings)
         guard !questions.isEmpty else { return nil }
 
         // Names are trimmed on the way into the match so the scoreboard shows
@@ -217,6 +219,7 @@ final class PlayerSetupViewModel {
 
         return GameSession(players: roster,
                            settings: settings,
-                           questions: questions)
+                           questions: questions,
+                           plannedQuestionCount: availableQuestionCount)
     }
 }

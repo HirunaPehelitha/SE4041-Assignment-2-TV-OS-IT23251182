@@ -32,7 +32,7 @@ private func makeRepository(questionCount: Int = 20,
                                                               questions: questions,
                                                               rejected: []))
     )
-    try? repository.load()
+    _ = try? repository.load()
     return repository
 }
 
@@ -323,8 +323,12 @@ final class StartBattleTests: XCTestCase {
 
         let session = try XCTUnwrap(vm.startBattle())
 
+        // The round asks 10 questions. The pool behind it is wider, so Adaptive
+        // Challenge has spare questions to choose between.
         XCTAssertEqual(session.questionCount, 10)
-        XCTAssertEqual(Set(session.questions.map(\.id)).count, 10, "No repeated questions")
+        XCTAssertGreaterThanOrEqual(session.poolSize, session.questionCount)
+        XCTAssertEqual(Set(session.questions.map(\.id)).count, session.poolSize,
+                       "No repeated questions in the pool")
         for question in session.questions {
             XCTAssertEqual(question.options.count, 4)
             XCTAssertTrue(question.options.indices.contains(question.correctIndex))

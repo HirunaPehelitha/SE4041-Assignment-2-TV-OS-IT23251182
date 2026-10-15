@@ -15,7 +15,7 @@ import Foundation
 /// never be written back over the authoritative one in the JSON, and the view
 /// layer cannot accidentally read `Question.correctIndex` and mark the wrong
 /// option as right.
-struct PreparedQuestion: Identifiable, Equatable, Hashable {
+struct PreparedQuestion: Identifiable, Codable, Equatable, Hashable {
 
     /// The original bank entry, kept for its id, category, difficulty and explanation.
     let source: Question
