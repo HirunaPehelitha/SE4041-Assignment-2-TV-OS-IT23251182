@@ -34,6 +34,20 @@
                ReferencedContainer = "container:IT23251182-tvOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BB2000000000000000000001"
+               BuildableName = "IT23251182-tvOSUITests.xctest"
+               BlueprintName = "IT23251182-tvOSUITests"
+               ReferencedContainer = "container:IT23251182-tvOS.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -49,6 +63,16 @@
                BlueprintIdentifier = "BB1000000000000000000001"
                BuildableName = "IT23251182-tvOSTests.xctest"
                BlueprintName = "IT23251182-tvOSTests"
+               ReferencedContainer = "container:IT23251182-tvOS.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BB2000000000000000000001"
+               BuildableName = "IT23251182-tvOSUITests.xctest"
+               BlueprintName = "IT23251182-tvOSUITests"
                ReferencedContainer = "container:IT23251182-tvOS.xcodeproj">
             </BuildableReference>
          </TestableReference>
