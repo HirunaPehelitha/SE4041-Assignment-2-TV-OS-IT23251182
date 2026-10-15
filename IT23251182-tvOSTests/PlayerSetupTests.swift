@@ -419,8 +419,8 @@ final class GameSessionTurnTests: XCTestCase {
     }
 
     func testMaximumPointsSumsTheQuestions() {
-        let s = session(players: 2, questions: 4)   // four easy questions
-        XCTAssertEqual(s.maximumPoints, 4 * Difficulty.easy.basePoints)
+        let s = session(players: 2, questions: 4)
+        XCTAssertEqual(s.maximumPoints, 4 * MatchScoring.correctAnswerPoints)
     }
 
     func testSessionWithNoQuestionsIsNotPlayable() {

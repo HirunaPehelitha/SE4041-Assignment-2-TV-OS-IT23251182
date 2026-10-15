@@ -83,11 +83,25 @@ struct ContentView: View {
                                                 repository: repository)
             ) { session in
                 // Setup reports the built session; this view decides where it goes.
-                path.append(.match(session))
+                path.append(.matchReady(session))
             }
 
-        case .match(let session):
-            MatchStartView(session: session)
+        case .matchReady(let session):
+            MatchStartView(session: session) {
+                path.append(.quiz(session))
+            }
+
+        case .quiz(let session):
+            QuizGameView(session: session) { result in
+                // Replace the stack rather than pushing: a finished match must
+                // not be reachable again with the Back button.
+                path = [.results(result)]
+            }
+
+        case .results(let result):
+            MatchResultsView(result: result) {
+                path.removeAll()
+            }
 
         case .howToPlay:
             HowToPlayView()

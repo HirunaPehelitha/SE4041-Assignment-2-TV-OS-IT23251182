@@ -108,6 +108,24 @@ DerivedData directory left behind by an earlier temporary clone meant the
 simulator was being given an old build, which was caught by comparing the built
 dylib's timestamp against the build time.
 
+### Stage 6 — Game engine and quiz screen
+**Prompt:** Build the core gameplay: turn-based play for two to four players,
+ten questions (or fewer if the category holds fewer), 100 points for a correct
+answer and none for a wrong answer or timeout, a question never scoring twice,
+a countdown with safe cancellation, frozen input after an answer, answer
+feedback, correct handling of the last question, and a controlled transition to
+results. Keep business logic out of the view and testable.
+
+**Produced:** `MatchScoring`, `QuizGameViewModel` (the engine, with a
+`MatchPhase` lifecycle), `QuizGameView`, `AnswerCard` with the countdown ring
+and score strip, and `MatchResultsView`. Test count rose to 175.
+
+**Issue raised:** the flat 100-point rule in this stage contradicted the
+difficulty-weighted scoring (100/200/300) built and displayed in earlier stages.
+I confirmed the flat rule, and the assistant unified it into a single
+`MatchScoring` type and updated the How to Play copy, the category screens and
+two tests that still asserted the old values.
+
 ---
 
 ## What I reviewed and verified myself

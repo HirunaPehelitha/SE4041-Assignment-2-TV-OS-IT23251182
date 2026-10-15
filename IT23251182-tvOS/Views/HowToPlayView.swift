@@ -28,8 +28,8 @@ struct HowToPlayView: View {
              title: "Beat the clock",
              detail: "Easy questions allow 15 seconds, medium 20 and hard 25. Running out of time scores nothing for that turn."),
         Rule(symbol: "star.fill",
-             title: "Harder means more points",
-             detail: "A correct answer is worth 100 points on easy, 200 on medium and 300 on hard. There is no penalty for a wrong answer."),
+             title: "Every correct answer scores",
+             detail: "A correct answer is worth 100 points. A wrong answer scores nothing, and there is no penalty — so it is always worth a guess."),
         Rule(symbol: "trophy.fill",
              title: "Highest score wins",
              detail: "After the final round the scoreboard ranks every player, and the completed match is saved to your match history on this Apple TV.")

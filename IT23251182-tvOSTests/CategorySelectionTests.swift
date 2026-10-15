@@ -88,8 +88,8 @@ final class RepositoryAvailabilityTests: XCTestCase {
         XCTAssertEqual(summary.count(for: .easy), 2)
         XCTAssertEqual(summary.count(for: .medium), 0)
         XCTAssertEqual(summary.count(for: .hard), 1)
-        // 100 + 100 + 300
-        XCTAssertEqual(summary.maximumPoints, 500)
+        // Flat scoring: three questions, whatever their difficulty.
+        XCTAssertEqual(summary.maximumPoints, 3 * MatchScoring.correctAnswerPoints)
     }
 
     func testAllCategoryAvailabilityIncludesEmptyCategories() throws {

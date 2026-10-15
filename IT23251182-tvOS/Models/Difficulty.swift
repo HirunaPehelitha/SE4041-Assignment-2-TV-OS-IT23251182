@@ -7,10 +7,11 @@
 
 import Foundation
 
-/// How hard a question is, and therefore how much it is worth.
+/// How hard a question is, and therefore how long a player gets to answer it.
 ///
-/// Points and timings live on the model rather than inside the scoring code so
-/// the rules sit in one obvious place and can be unit-tested directly.
+/// Difficulty no longer affects the score — every correct answer is worth the
+/// same (see `MatchScoring`). What it still controls is thinking time, which is
+/// why the timing lives here and the points do not.
 enum Difficulty: String, CaseIterable, Identifiable, Codable, Equatable, Hashable, Comparable {
     case easy
     case medium
@@ -23,15 +24,6 @@ enum Difficulty: String, CaseIterable, Identifiable, Codable, Equatable, Hashabl
         case .easy:   return "Easy"
         case .medium: return "Medium"
         case .hard:   return "Hard"
-        }
-    }
-
-    /// Base points awarded for a correct answer at this level.
-    var basePoints: Int {
-        switch self {
-        case .easy:   return 100
-        case .medium: return 200
-        case .hard:   return 300
         }
     }
 

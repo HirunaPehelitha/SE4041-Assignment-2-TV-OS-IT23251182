@@ -106,13 +106,15 @@ final class QuestionRepositoryTests: XCTestCase {
         XCTAssertFalse(repository.availableCategories.contains(.generalKnowledge))
     }
 
-    func testMaximumPointsUsesDifficultyValues() throws {
+    func testMaximumPointsIsFlatPerQuestion() throws {
         let repository = try makeRepository(sampleQuestions)
 
-        // science: easy 100 + medium 200 + hard 300
-        XCTAssertEqual(repository.maximumPoints(in: .scienceAndNature), 600)
-        // culture: two easy questions
-        XCTAssertEqual(repository.maximumPoints(in: .sriLankanCulture), 200)
+        // Every correct answer is worth the same, whatever the difficulty.
+        XCTAssertEqual(repository.maximumPoints(in: .scienceAndNature),
+                       3 * MatchScoring.correctAnswerPoints)
+        XCTAssertEqual(repository.maximumPoints(in: .sriLankanCulture),
+                       2 * MatchScoring.correctAnswerPoints)
+        XCTAssertEqual(repository.maximumPoints(in: .generalKnowledge), 0)
     }
 
     // MARK: Settings filtering

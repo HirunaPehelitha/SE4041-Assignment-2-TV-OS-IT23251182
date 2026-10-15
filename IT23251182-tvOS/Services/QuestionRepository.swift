@@ -247,7 +247,7 @@ final class QuestionRepository {
     /// Highest score obtainable if every question in a category were answered
     /// correctly.
     func maximumPoints(in category: QuizCategory) -> Int {
-        questions(in: category).reduce(0) { $0 + $1.difficulty.basePoints }
+        MatchScoring.maximumPoints(forQuestionCount: count(in: category))
     }
 
     // MARK: Availability
@@ -267,7 +267,7 @@ final class QuestionRepository {
         return CategoryAvailability(
             category: category,
             totalQuestions: matching.count,
-            maximumPoints: matching.reduce(0) { $0 + $1.difficulty.basePoints },
+            maximumPoints: MatchScoring.maximumPoints(forQuestionCount: matching.count),
             countsByDifficulty: counts
         )
     }
